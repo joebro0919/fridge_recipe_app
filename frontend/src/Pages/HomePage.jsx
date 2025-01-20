@@ -77,39 +77,47 @@ export default function HomePage({routines, loading, error}) {
   }
 
   return(
-    <div  className = "homePage">
+    <div className="homePage">
       <NavBar/>
       {routines ? 
         (  
           <div className="calendar">
-            <div className = "month">
-              <button onClick = {setToCurrentMonth}> Today </button>
-              <button onClick = {decreaseMonth}>&lt; </button>
+            <div className="month">
+              <button onClick={setToCurrentMonth}> Today </button>
+              <button onClick={decreaseMonth}>&lt; </button>
               <h1>{month[date.getMonth()]}</h1>
               <h1>{date.getFullYear()}</h1>
-              <button onClick = {increaseMonth}> &gt;</button>
+              <button onClick={increaseMonth}> &gt;</button>
             </div>
-            <div className = "days">
-              {days.map((item,index) => 
-                <div className ="dayColumn">
+            <div className="days">
+              {days.map((item, index) => 
+                <div className="dayColumn" key={index}>
                   <h2>{item}</h2>
-                  {createMonth().filter((day)=> day.dayOfWeek == index).map(element => 
-                    <div className= {`${element.month === date.getMonth() ? "currentMonth" : "otherMonth"} 
-                    ${element.month === currentDate.getMonth() && element.dayOfMonth === currentDate.getDate() ? "currentDay" : ""}`}>
-                     {element.month === date.getMonth() ?<><h3>{element.dayOfMonth}</h3> <TaskModal routines = {routines} day = {item}></TaskModal></> : <h3></h3>}
-                     
-
+                  {createMonth().filter((day) => day.dayOfWeek === index).map((element, idx) => 
+                    <div 
+                      key={idx}
+                      className={`${element.month === date.getMonth() ? "currentMonth" : "otherMonth"} 
+                      ${element.month === currentDate.getMonth() && element.dayOfMonth === currentDate.getDate() ? "currentDay" : ""}`}
+                    >
+                      {element.month === date.getMonth() ? 
+                        <>
+                          <h3>{element.dayOfMonth}</h3> 
+                          <TaskModal routines={routines} day={item}></TaskModal>
+                        </> 
+                        : 
+                        <h3></h3>
+                      }
                     </div>
-                    )}
+                  )}
                 </div>
-                )}
+              )}
             </div>  
           </div>
         )
         :
         (<p>no routines found</p>)
-        } 
+      } 
     </div>
   )
 
-  }
+}
